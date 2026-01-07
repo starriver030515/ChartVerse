@@ -1,4 +1,8 @@
+<div align="center">
+
 # ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch
+
+</div>
 
 <div align="center">
   <strong>Anonymous Authors</strong>
