@@ -58,16 +58,7 @@ We curate ChartVerse-SFT-600K and ChartVerse-RL-40K using Qwen3-VL-30B-A3B-Think
 Visual density does not always equal difficulty. We propose **Rollout Posterior Entropy (RPE)** to quantify the intrinsic complexity of a chart via **generative stability**.
 
 
-
-<div align="center">
-
-<img src="assets/rpe_illustration.png" width="100%" alt="RPE Illustration">
-
-</div>
-
-
-
-**As shown in the figure above**, we quantify complexity through a mathematical pipeline:
+We quantify complexity through a mathematical pipeline:
 
 
 
