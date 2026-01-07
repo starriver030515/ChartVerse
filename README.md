@@ -51,33 +51,65 @@ We curate ChartVerse-SFT-600K and ChartVerse-RL-40K using Qwen3-VL-30B-A3B-Think
 
 ### 1. Metric: Rollout Posterior Entropy (RPE)
 
-We quantify intrinsic complexity via **generative stability**.
+Visual density does not always equal difficulty. We propose **Rollout Posterior Entropy (RPE)** to quantify the intrinsic complexity of a chart via **generative stability**.
 
-**As shown above**, the calculation pipeline is:
-* **🔄 Rollout:** Generate executable code multiple times using a VLM.
-* **🧮 Entropy:** Compute spectral entropy from the CLIP embedding Gram matrix through singular values
-* **🛡️ Filter:** Retain only challenging samples with high entropy.
+
+
+<div align="center">
+
+<img src="assets/rpe_illustration.png" width="100%" alt="RPE Illustration">
+
+</div>
+
+
+
+**As shown in the figure above**, we quantify complexity through a mathematical pipeline:
+
+
+
+* **🔄 VLM Rollout:** Given a chart, we prompt a VLM to generate executable code 8 times. Simple charts yield consistent codes, while complex ones lead to divergence.
+
+* **🧮 Spectral Entropy:** We extract features using CLIP to form a Gram matrix $G$. We **normalize its singular values** to obtain a probability distribution $p_i$, and compute the entropy as:
+
+$$RPE = \frac{-\sum p_i \log p_i}{K}$$
+
+$$RPE = \frac{-\sum p_i \log p_i}{K}$$
+
+* **🛡️ Difficulty Filter:** We strictly retain samples with **$RPE \ge 0.4$**, ensuring our model learns solely from challenging patterns that test the limits of modern VLMs.
+
+
 
 ### 2. Complexity-Aware Chart Coder
-An autonomous coder trained to synthesize diverse charts from scratch.
-* **❄️ Cold Start:** Inferred code from high-RPE real-world charts using **Claude-4-Sonnet**.
-* **🔄 Iterative Self-Enhancement:**
-    1. **Generate:** Previous coder generates candidates.
-    2. **Filter:** Keep samples with **High RPE** and **Low Similarity**.
-    3. **Retrain:** Update the coder with the boosted dataset to train the next round.
+
+We train a specialized coder to autonomously synthesize diverse, high-complexity charts from scratch.
+
+
+
+* **❄️ Cold Start Construction:** We curate a seed dataset $\mathcal{C}_{cold}$ by filtering real-world charts with high RPE and inferring their code using **Claude-4-Sonnet**.
+
+* **🔄 Iterative Self-Enhancement:** We use the **previous round's coder** to generate large-scale candidates using high-temperature sampling. We filter these by **High Complexity** and **Low Similarity** to train the **next round's coder**, progressively mastering complex visualizations.
+
+
 
 ### 3. Truth-Anchored Inverse QA Pipeline
-We adopt an **Answer-First Paradigm ($A \rightarrow Q$)** to eliminate hallucinations.
 
-#### Phase I: Inverse Logic Construction (Text-Only)
-Using **Qwen3-30B-A3B-Thinking**, we synthesize the logic chain based on code ground truth:
-1.  **Script ($S$):** Code $\rightarrow$ Python Script $\rightarrow$ Deterministic Answer $A_{py}$.
-2.  **Reverse ($Q$):** Synthesize Question $Q$ strictly leading to Script $S$.
-3.  **Verify:** Retain pairs where inferred answer $\hat{A} == A_{py}$.
+#### Phase I: Inverse Logic Construction
 
-#### Phase II: Visual Distillation
-* **CoT Distillation:** Generate reasoning traces using **Qwen3-VL-30B-A3B-Thinking**.
-* **Fail-Rate Filter:** Retain "hard but solvable" samples ($0 < r(Q) < 1$) to ensure difficulty.
+We explicitly synthesize the logic chain using **Qwen3-30B-A3B-Thinking** (Text-only) based on the code ground truth:
+
+1. **Script Generation ($S$):** We prompt **Qwen3-30B-A3B-Thinking** to analyze the chart code and generate a Python script $S$ that performs meaningful operations on the data, outputting a deterministic value $A_{py}$.
+
+2. **Reverse Question Synthesis:** We prompt **Qwen3-30B-A3B-Thinking** to generate a question $Q$ that strictly leads to the logic of script $S$.
+
+3. **Consistency Check:** We prompt **Qwen3-30B-A3B-Thinking** to infer the answer $\hat{A}$ using only the code and question $Q$. We strictly retain samples where the inferred answer $\hat{A}$ matches the execution result $A_{py}$.
+
+#### Phase II: CoT Distillation & Difficulty Filtration
+
+To ensure the data is visually challenging for VLMs:
+
+* **CoT Distillation:** We employ **Qwen3-VL-30B-A3B-Thinking** (VLM) to generate Chain-of-Thought (CoT) reasoning traces for the verified pairs.
+
+* **Failure Rate Filtering:** We calculate the failure rate $r(Q)$ over multiple rollouts. We retain "hard but solvable" samples where **$0 < r(Q) < 1$**, discarding trivial or impossible cases.
 
 ## 💾 Datasets
 
@@ -178,3 +210,36 @@ output_text = processor.batch_decode(
     generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False
 )
 print(output_text[0])
+```
+
+## 🛠️ Training
+
+We provide comprehensive training scripts in the `training/` directory. Our pipeline is built on **[Llama-Factory](https://github.com/hiyouga/LLaMA-Factory)** for Supervised Fine-Tuning (SFT) and **[veRL](https://github.com/volcengine/verl)** for Reinforcement Learning (RL).
+
+Please ensure you have downloaded the corresponding datasets ([SFT](https://huggingface.co/datasets/ChartVerse-SFT-600k) / [RL](https://huggingface.co/datasets/ChartVerse-RL-40k)) and configured the environments before running the scripts.
+
+| Model Size | Stage | Framework | Script Path |
+| :---: | :---: | :--- | :--- |
+| **2B** | SFT | Llama-Factory | [`training/chartverse-sft-2b.yaml`](training/chartverse-sft-2b.yaml) |
+| **4B** | SFT | Llama-Factory | [`training/chartverse-sft-4b.sh`](training/chartverse-sft-4b.yaml) |
+| **8B** | SFT | Llama-Factory | [`training/chartverse-sft-8b.yaml`](training/chartverse-sft-8b.yaml) |
+| **2B** | RL | veRL | [`training/chartverse-rl-2b.sh`](training/chartverse-rl-2b.sh) |
+| **4B** | RL | veRL | [`training/chartverse-rl-4b.sh`](training/chartverse-rl-4b.sh) |
+| **8B** | RL | veRL | [`training/chartverse-rl-8b.sh`](training/chartverse-rl-8b.sh) |
+
+## ⚖️ Evaluation
+
+We provide detailed evaluation scripts in the `eval/` directory. Our evaluation pipeline leverages [VLMEvalKit](https://github.com/open-compass/VLMEvalKit) for the overall framework and [Compass-Verifier](https://github.com/open-compass/CompassVerifier) for rigorous LLM-as-a-Judge assessment. Our implementation ensures that metrics align closely with the official Qwen3-VL results reported in the paper. Please refer to [eval/evaluation.md](eval/evaluation.md) for detailed instructions.
+
+## 🖊️ Citation
+
+If you find our work helpful, please cite:
+
+```bibtex
+@article{chartverse2026,
+  title={ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch},
+  author={Anonymous Authors},
+  journal={Anonymous ACL Submission},
+  year={2026}
+}
+```
