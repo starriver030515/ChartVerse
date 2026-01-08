@@ -17,9 +17,9 @@
       <img alt="arXiv" src="https://img.shields.io/badge/arXiv-ChartVerse-red?logo=arxiv" height="25" />
   </a>
   <a href="https://github.com/YOUR_USERNAME/ChartVerse" target="_blank">
-      <img alt="Github Star" src="https://img.shields.io/github/stars/YOUR_USERNAME/ChartVerse?style=social" height="25" />
+      <img alt="Github Star" src="https://img.shields.io/github/stars/starriver030515/ChartVerse?style=social" height="25" />
   </a>
-  <a href="https://huggingface.co/collections/YOUR_USERNAME/chartverse-models" target="_blank">
+  <a href="https://huggingface.co/collections/starriver030515/ChartVerse" target="_blank">
       <img alt="HF Collections" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Collection-ChartVerse-ffc107?color=ffc107&logoColor=white" height="25" />
   </a>
   <a href="https://YOUR_USERNAME.github.io/ChartVerse/" target="_blank">
@@ -65,8 +65,6 @@ We quantify complexity through a mathematical pipeline:
 * **🔄 VLM Rollout:** Given a chart, we prompt a VLM to generate executable code 8 times. Simple charts yield consistent codes, while complex ones lead to divergence.
 
 * **🧮 Spectral Entropy:** We extract features using CLIP to form a Gram matrix $G$. We **normalize its singular values** to obtain a probability distribution $p_i$, and compute the entropy as:
-
-$$RPE = \frac{-\sum p_i \log p_i}{K}$$
 
 $$RPE = \frac{-\sum p_i \log p_i}{K}$$
 
@@ -159,6 +157,25 @@ We evaluate ChartVerse on 6 benchmarks requiring complex chart understanding and
 * **Student > Teacher:** **ChartVerse-8B** breaks the distillation ceiling, surpassing its teacher model, **Qwen3-VL-30B-Thinking.
 * **Top-Tier Performance:** Our 8B model rivals the performance of the much larger **Qwen3-VL-32B-Thinking**, proving the effectiveness of our pipeline.
 
+## 🚂 Training
+
+We provide comprehensive training scripts in the `training/` directory. Our pipeline is built on **[Llama-Factory](https://github.com/hiyouga/LLaMA-Factory)** for Supervised Fine-Tuning (SFT) and **[veRL](https://github.com/volcengine/verl)** for Reinforcement Learning (RL).
+
+Please ensure you have downloaded the corresponding datasets ([SFT](https://huggingface.co/datasets/ChartVerse-SFT-600k) / [RL](https://huggingface.co/datasets/ChartVerse-RL-40k)) and configured the environments before running the scripts.
+
+| Model Size | Stage | Framework | Script Path |
+| :---: | :---: | :--- | :--- |
+| **2B** | SFT | Llama-Factory | [`training/chartverse-sft-2b.yaml`](training/chartverse-sft-2b.yaml) |
+| **4B** | SFT | Llama-Factory | [`training/chartverse-sft-4b.sh`](training/chartverse-sft-4b.yaml) |
+| **8B** | SFT | Llama-Factory | [`training/chartverse-sft-8b.yaml`](training/chartverse-sft-8b.yaml) |
+| **2B** | RL | veRL | [`training/chartverse-rl-2b.sh`](training/chartverse-rl-2b.sh) |
+| **4B** | RL | veRL | [`training/chartverse-rl-4b.sh`](training/chartverse-rl-4b.sh) |
+| **8B** | RL | veRL | [`training/chartverse-rl-8b.sh`](training/chartverse-rl-8b.sh) |
+
+## ⚖️ Evaluation
+
+We provide detailed evaluation scripts in the `eval/` directory. Our evaluation pipeline leverages [VLMEvalKit](https://github.com/open-compass/VLMEvalKit) for the overall framework and [Compass-Verifier](https://github.com/open-compass/CompassVerifier) for rigorous LLM-as-a-Judge assessment. Our implementation ensures that metrics align closely with the official Qwen3-VL results reported in the paper. Please refer to [eval/evaluation.md](eval/evaluation.md) for detailed instructions.
+
 ## 🛠️ Quick Start
 
 Since ChartVerse models are initialized from **Qwen3-VL**, usage is straightforward with the `transformers` library.
@@ -206,25 +223,6 @@ output_text = processor.batch_decode(
 )
 print(output_text[0])
 ```
-
-## 🛠️ Training
-
-We provide comprehensive training scripts in the `training/` directory. Our pipeline is built on **[Llama-Factory](https://github.com/hiyouga/LLaMA-Factory)** for Supervised Fine-Tuning (SFT) and **[veRL](https://github.com/volcengine/verl)** for Reinforcement Learning (RL).
-
-Please ensure you have downloaded the corresponding datasets ([SFT](https://huggingface.co/datasets/ChartVerse-SFT-600k) / [RL](https://huggingface.co/datasets/ChartVerse-RL-40k)) and configured the environments before running the scripts.
-
-| Model Size | Stage | Framework | Script Path |
-| :---: | :---: | :--- | :--- |
-| **2B** | SFT | Llama-Factory | [`training/chartverse-sft-2b.yaml`](training/chartverse-sft-2b.yaml) |
-| **4B** | SFT | Llama-Factory | [`training/chartverse-sft-4b.sh`](training/chartverse-sft-4b.yaml) |
-| **8B** | SFT | Llama-Factory | [`training/chartverse-sft-8b.yaml`](training/chartverse-sft-8b.yaml) |
-| **2B** | RL | veRL | [`training/chartverse-rl-2b.sh`](training/chartverse-rl-2b.sh) |
-| **4B** | RL | veRL | [`training/chartverse-rl-4b.sh`](training/chartverse-rl-4b.sh) |
-| **8B** | RL | veRL | [`training/chartverse-rl-8b.sh`](training/chartverse-rl-8b.sh) |
-
-## ⚖️ Evaluation
-
-We provide detailed evaluation scripts in the `eval/` directory. Our evaluation pipeline leverages [VLMEvalKit](https://github.com/open-compass/VLMEvalKit) for the overall framework and [Compass-Verifier](https://github.com/open-compass/CompassVerifier) for rigorous LLM-as-a-Judge assessment. Our implementation ensures that metrics align closely with the official Qwen3-VL results reported in the paper. Please refer to [eval/evaluation.md](eval/evaluation.md) for detailed instructions.
 
 ## 🖊️ Citation
 

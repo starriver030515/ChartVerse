@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChartVerse: Scaling Chart Reasoning</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+      background-color: #fdfdfd;
+    }
+    
+    /* 🌈 Colorful Hero Background */
+    .hero-custom {
+      background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); 
+      /* 可选配色方案2: background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%); */
+      padding-bottom: 2rem;
+    }
+
+    .hero-title {
+      color: #333;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 700;
+    }
+
+    .publication-links .button {
+      margin: 5px;
+      border: 1px solid #dbdbdb;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    .publication-links .button:hover {
+      background-color: #fff;
+      border-color: #3273dc;
+    }
+
+    /* Section Styling */
+    .section-title {
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 600;
+      color: #4a4a4a;
+    }
+    
+    .content-block {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 2.5rem;
+    }
+    
+    .method-step-title {
+      color: #209cee;
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    /* Carousel */
+    .carousel-container {
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      padding: 10px 0;
+    }
+    .carousel-track {
+      display: inline-block;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-card {
+      display: inline-block;
+      width: 320px;
+      margin-right: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: white;
+      cursor: pointer;
+    }
+    .carousel-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      background-color: #fafafa;
+    }
+
+    /* Interactive QA */
+    .qa-box {
+      background-color: #f5f7fa;
+      border-left: 5px solid #3273dc;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+    .qa-thumb {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border: 3px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 0.2s;
+    }
+    .qa-thumb:hover, .qa-thumb.active {
+      border-color: #3273dc;
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    
+    pre {
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero hero-custom is-medium">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-vcentered">
+        
+        <div class="column is-7">
+          <h1 class="title is-1 hero-title">
+            ChartVerse
+          </h1>
+          <h2 class="subtitle is-3" style="color: #4a4a4a;">
+            Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch
+          </h2>
+          
+          <div class="is-size-5 publication-authors mb-4">
+            <span class="author-block"><strong>Anonymous Authors</strong></span><br>
+            <span class="author-block is-size-6">(Affiliations Placeholder)</span>
+          </div>
+
+          <div class="publication-links">
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/YOUR_ARXIV_ID" class="button is-rounded">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://github.com/YOUR_USERNAME/ChartVerse" class="button is-rounded">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://huggingface.co/collections/starriver030515/ChartVerse" class="button is-rounded">
+                <span class="icon">🤗</span>
+                <span>Datasets & Models</span>
+              </a>
+            </span>
+          </div>
+        </div>
+
+        <div class="column is-5">
+          <figure class="image">
+            <img src="static/images/teaser.png" alt="ChartVerse Teaser" style="border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); background: white;">
+            <figcaption class="has-text-centered is-size-7 mt-2">
+              <b>Figure 1:</b> The ChartVerse ecosystem synthesizes complex charts and reliable reasoning data from scratch.
+            </figcaption>
+          </figure>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="content-block">
+      <h2 class="title is-3 has-text-centered">Abstract</h2>
+      <div class="content has-text-justified">
+        <p>
+          Chart reasoning is a critical capability for Vision Language Models (VLMs). However, the development of open-source models is severely hindered by the lack of high-quality training data. Existing datasets suffer from a dual challenge: synthetic charts are often simplistic and repetitive, while the associated QA pairs are prone to hallucinations and lack the reasoning depth required for complex tasks.
+        </p>
+        <p>
+          To bridge this gap, we propose <strong>ChartVerse</strong>, a scalable framework designed to synthesize complex charts and reliable reasoning data from scratch.
+        </p>
+        <ul>
+          <li>
+            (1) To address the bottleneck of simple patterns, we first introduce <strong>Rollout Posterior Entropy (RPE)</strong>, a novel metric that quantifies chart complexity. Guided by RPE, we develop <strong>complexity-aware chart coder</strong> to autonomously synthesize diverse, high-complexity charts via executable programs.
+          </li>
+          <li>
+            (2) To guarantee reasoning rigor, we develop <strong>truth-anchored inverse QA synthesis</strong>. Diverging from standard generation, we adopt an answer-first paradigm: we extract deterministic answers directly from the source code, generate questions conditional on these anchors, and enforce strict consistency verification.
+          </li>
+        </ul>
+        <p>
+          We curate <strong>ChartVerse-SFT-600K</strong> and <strong>ChartVerse-RL-40K</strong>. Experimental results demonstrate that <strong>ChartVerse-8B</strong> achieves state-of-the-art performance (64.1%), notably surpassing its teacher and rivaling the stronger Qwen3-VL-32B-Thinking.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title">Methodology</h2>
+
+    <div class="content-block has-text-centered">
+      <h3 class="title is-4 mb-5">Framework Overview</h3>
+      <div class="columns is-multiline is-centered is-vcentered">
+        
+        <div class="column is-5">
+           <figure class="image">
+             <img src="static/images/rpe_illustration.png" alt="RPE Illustration" style="border-radius: 8px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+             <figcaption class="is-size-6 mt-3 has-text-weight-semibold has-text-grey-dark">Rollout Posterior Entropy (RPE)</figcaption>
+           </figure>
+        </div>
+
+        <div class="column is-7">
+           <figure class="image">
+             <img src="static/images/pipeline.png" alt="Pipeline Overview" style="border-radius: 8px; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+             <figcaption class="is-size-6 mt-3 has-text-weight-semibold has-text-grey-dark">ChartVerse Pipeline</figcaption>
+           </figure>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h3 class="title is-4">1. Metric: Rollout Posterior Entropy (RPE)</h3>
+      <div class="content">
+        <p>
+          Visual density does not always equal difficulty. We propose <strong>RPE</strong> to quantify the intrinsic complexity of a chart via <strong>generative stability</strong>.
+        </p>
+        <ul>
+          <li><strong>🔄 VLM Rollout:</strong> Given a chart, we prompt a VLM to generate executable code 8 times. Simple charts yield consistent codes, while complex ones lead to divergence.</li>
+          <li><strong>🧮 Spectral Entropy:</strong> We extract features using CLIP to form a Gram matrix \(G\), normalize singular values to get \(p_i\), and compute entropy:
+            $$RPE = \frac{-\sum p_i \log p_i}{K}$$
+          </li>
+          <li><strong>🛡️ Difficulty Filter:</strong> We strictly retain samples with <strong>\(RPE \ge 0.4\)</strong>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h3 class="title is-4">2. Complexity-Aware Chart Coder</h3>
+      <p>We train a specialized coder to autonomously synthesize diverse, high-complexity charts from scratch.</p>
+      <div class="content mt-3">
+        <ul>
+          <li><strong>❄️ Cold Start Construction:</strong> We curate a seed dataset \(\mathcal{C}_{cold}\) by filtering real-world charts with high RPE and inferring their code using <strong>Claude-4-Sonnet</strong>.</li>
+          <li><strong>🔄 Iterative Self-Enhancement:</strong> We use the previous round's coder to generate large-scale candidates. We filter these by <strong>High Complexity</strong> and <strong>Low Similarity</strong> to train the next round's coder.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content-block">
+      <h3 class="title is-4">3. Truth-Anchored Inverse QA Pipeline</h3>
+      <div class="content">
+        <h5 class="method-step-title">Phase I: Inverse Logic Construction</h5>
+        <p>We explicitly synthesize the logic chain using <strong>Qwen3-30B-A3B-Thinking</strong> (Text-only) based on the code ground truth:</p>
+        <ol>
+          <li><strong>Script Generation (\(S\)):</strong> Generate a Python script \(S\) that outputs a deterministic value \(A_{py}\).</li>
+          <li><strong>Reverse Question Synthesis:</strong> Generate a question \(Q\) that strictly leads to the logic of script \(S\).</li>
+          <li><strong>Consistency Check:</strong> Retain samples where the inferred answer \(\hat{A}\) matches \(A_{py}\).</li>
+        </ol>
+
+        <h5 class="method-step-title">Phase II: CoT Distillation & Filtration</h5>
+        <p>To ensure data is visually challenging:</p>
+        <ul>
+          <li><strong>CoT Distillation:</strong> Employ <strong>Qwen3-VL-30B-A3B-Thinking</strong> to generate CoT traces.</li>
+          <li><strong>Failure Rate Filtering:</strong> Retain "hard but solvable" samples where failure rate \(0 < r(Q) < 1\).</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title">Datasets & Comparison</h2>
+    <div class="content-block">
+      <p class="mb-5">
+        We compare <strong>ChartVerse-SFT-600K</strong> with mainstream chart reasoning datasets. ChartVerse achieves superior diversity and complexity.
+      </p>
+      
+      <figure class="image is-centered mb-5">
+        <img src="static/images/chart_cmp.png" alt="Dataset Comparison" style="max-width: 80%; margin: 0 auto; display: block;">
+      </figure>
+
+      <div class="columns is-multiline">
+        <div class="column is-4">
+          <div class="notification is-info is-light">
+            <strong>Higher Complexity (RPE)</strong><br>
+            Highest RPE (0.44) compared to baselines.
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="notification is-warning is-light">
+             <strong>Superior Diversity</strong><br>
+             Highest Color Entropy (3.17) and Semantic Embedding Spread.
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="notification is-success is-light">
+             <strong>Rigorous Reliability</strong><br>
+             Guaranteed Answer Accuracy via Inverse QA pipeline.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title">🏆 Performance</h2>
+    <div class="content-block has-text-centered">
+      <img src="static/images/overall_result.png" alt="Main Results" style="max-width: 100%; border-radius: 8px;">
+      <div class="content has-text-left mt-5">
+        <p>We evaluate ChartVerse on 6 benchmarks. The results demonstrate that <strong>data quality triumphs over model scale</strong>.</p>
+        <ul>
+          <li><strong>Small > Large:</strong> Despite having half the parameters, <strong>ChartVerse-4B</strong> (61.9%) significantly outperforms Qwen3-VL-8B-Thinking (60.0%).</li>
+          <li><strong>Student > Teacher:</strong> <strong>ChartVerse-8B</strong> (64.1%) breaks the distillation ceiling, surpassing its teacher Qwen3-VL-30B-Thinking (62.9%).</li>
+          <li><strong>Top-Tier Performance:</strong> Our 8B model rivals the performance of the much larger Qwen3-VL-32B-Thinking.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title">🔥 Generation Gallery</h2>
+    <p class="subtitle has-text-centered is-size-6 mb-5">
+      Swipe to see diverse, high-complexity charts synthesized by our Complexity-Aware Chart Coder.
+    </p>
+
+    <div class="content-block" style="padding: 1rem;">
+      <div class="carousel-container" id="chartCarousel">
+        <div class="carousel-track" id="track">
+          </div>
+      </div>
+      
+      <div class="has-text-centered mt-4">
+        <button class="button is-dark is-outlined is-rounded" onclick="moveCarousel(-1)">
+          <span class="icon"><i class="fas fa-chevron-left"></i></span>
+        </button>
+        <button class="button is-dark is-outlined is-rounded" onclick="moveCarousel(1)">
+          <span class="icon"><i class="fas fa-chevron-right"></i></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section has-background-light">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 section-title">🧐 Reasoning Examples</h2>
+    <div class="content-block">
+      <div class="columns is-vcentered">
+        <div class="column is-6 has-text-centered">
+          <figure class="image">
+            <img id="qa-main-img" src="" alt="Selected Chart" style="max-height: 400px; width: auto; display: inline-block; border-radius: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+          </figure>
+          <div class="qa-thumbnails mt-4 is-justify-content-center" id="qa-thumbs">
+            </div>
+        </div>
+        <div class="column is-6">
+          <div class="qa-box">
+            <span class="icon-text has-text-info mb-2">
+              <span class="icon"><i class="fas fa-question-circle"></i></span>
+              <span class="has-text-weight-bold">Question</span>
+            </span>
+            <p id="qa-question-text">Loading...</p>
+          </div>
+          <div class="qa-box" style="border-left-color: #23d160;">
+            <span class="icon-text has-text-success mb-2">
+              <span class="icon"><i class="fas fa-check-circle"></i></span>
+              <span class="has-text-weight-bold">Ground Truth Answer</span>
+            </span>
+            <p id="qa-answer-text">Loading...</p>
+          </div>
+          <div class="qa-box" style="border-left-color: #ffdd57; background-color: #fffaeb;">
+             <span class="icon-text has-text-warning-dark mb-2">
+               <span class="icon"><i class="fas fa-lightbulb"></i></span>
+               <span class="has-text-weight-bold">Chain-of-Thought (Snippet)</span>
+             </span>
+             <p id="qa-cot-text" class="is-size-7 is-italic">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-4">Citation</h2>
+    <pre><code>@article{chartverse2026,
+  title={ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch},
+  author={Anonymous Authors},
+  journal={Anonymous ACL Submission},
+  year={2026}
+}</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="content has-text-centered">
+    <p>This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.</p>
+    <p class="is-size-7">Template adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.</p>
+  </div>
+</footer>
+
+<script>
+  // --- CAROUSEL SETUP ---
+  const track = document.getElementById('track');
+  const totalImages = 40; 
+  for (let i = 1; i <= totalImages; i++) {
+    const card = document.createElement('div');
+    card.className = 'carousel-card';
+    card.innerHTML = `<img src="static/images/carousel/${i}.png" alt="Generated Chart ${i}" onerror="this.src='https://via.placeholder.com/320x220?text=Chart+${i}'">`;
+    track.appendChild(card);
+  }
+
+  function moveCarousel(direction) {
+    const container = document.getElementById('chartCarousel');
+    const scrollStep = 335; 
+    container.scrollBy({ left: direction * scrollStep, behavior: 'smooth' });
+  }
+
+  // --- INTERACTIVE QA SETUP ---
+  const qaData = [
+    {
+      id: 1,
+      img: "static/images/qa/fig6.png", 
+      q: "Does the top cognitive condition's average score exceed 79, the final algorithm stage's total efficiency surpass 80, and the latest year's average growth rate exceed 20?",
+      a: "Yes",
+      cot: "I need to solve this problem which has three parts to check: 1. Does the top cognitive condition's average score exceed 79? ... First, let's look at part 1... From the graph (a), Trial 1 is ~73..."
+    },
+    {
+      id: 2,
+      img: "static/images/qa/fig7.png", 
+      q: "Which region demonstrates the greatest proportional variation in annual revenue compared to its typical revenue level?",
+      a: "Central America",
+      cot: "The question is asking which region has the greatest proportional variation... I need to calculate the range (Max - Min) or IQR divided by the median... Looking at the chart, it is a box plot..."
+    },
+    {
+      id: 3,
+      img: "static/images/qa/fig8.png", 
+      q: "Which element achieves the greatest balance of high power and extreme-temperature stability relative to its inherent complexity?",
+      a: "Element F",
+      cot: "I need to look at three different charts for each element... Elemental Power Distribution... Temperature Stability... and Elemental Complexity... So for each element (A-F), I need to get..."
+    }
+  ];
+
+  const mainImg = document.getElementById('qa-main-img');
+  const qText = document.getElementById('qa-question-text');
+  const aText = document.getElementById('qa-answer-text');
+  const cotText = document.getElementById('qa-cot-text');
+  const thumbContainer = document.getElementById('qa-thumbs');
+
+  function loadQA(index) {
+    const data = qaData[index];
+    mainImg.style.opacity = 0;
+    setTimeout(() => {
+      mainImg.src = data.img;
+      mainImg.onerror = function() { this.src = 'https://via.placeholder.com/400x300?text=Figure+'+(index+6); };
+      qText.textContent = data.q;
+      aText.textContent = data.a;
+      cotText.textContent = data.cot;
+      mainImg.style.opacity = 1;
+    }, 200);
+
+    document.querySelectorAll('.qa-thumb').forEach((thumb, i) => {
+      if (i === index) {
+        thumb.classList.add('active');
+        thumb.style.borderColor = '#3273dc';
+      } else {
+        thumb.classList.remove('active');
+        thumb.style.borderColor = 'transparent';
+      }
+    });
+  }
+
+  qaData.forEach((item, index) => {
+    const thumb = document.createElement('img');
+    thumb.src = item.img;
+    thumb.className = 'qa-thumb';
+    thumb.style.margin = '0 5px';
+    thumb.onerror = function() { this.src = 'https://via.placeholder.com/70?text=Fig'+(index+6); };
+    thumb.onclick = () => loadQA(index);
+    thumbContainer.appendChild(thumb);
+  });
+
+  loadQA(0);
+</script>
+
+</body>
+</html>
