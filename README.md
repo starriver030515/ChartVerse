@@ -19,10 +19,10 @@
   <a href="https://github.com/YOUR_USERNAME/ChartVerse" target="_blank">
       <img alt="Github Star" src="https://img.shields.io/github/stars/starriver030515/ChartVerse?style=social" height="25" />
   </a>
-  <a href="https://huggingface.co/collections/starriver030515/ChartVerse" target="_blank">
+  <a href="https://huggingface.co/collections/opendatalab/chartverse" target="_blank">
       <img alt="HF Collections" src="https://img.shields.io/badge/%F0%9F%A4%97%20_Collection-ChartVerse-ffc107?color=ffc107&logoColor=white" height="25" />
   </a>
-  <a href="https://YOUR_USERNAME.github.io/ChartVerse/" target="_blank">
+  <a href="https://chartverse.github.io" target="_blank">
       <img alt="Homepage" src="https://img.shields.io/badge/🌐_Homepage-Project_Page-blue?color=blue&logoColor=white" height="25" />
   </a>
 </div>
@@ -42,7 +42,7 @@
 
 Chart reasoning is a critical capability for Vision Language Models (VLMs). However, the development of open-source models is severely hindered by the lack of high-quality training data. Existing datasets suffer from a dual challenge: synthetic charts are often simplistic and repetitive, while the associated QA pairs are prone to hallucinations and lack the reasoning depth required for complex tasks.
 To bridge this gap, we propose **ChartVerse**, a scalable framework designed to synthesize complex charts and reliable reasoning data from scratch. (1) To address the bottleneck of simple patterns, we first introduce **Rollout Posterior Entropy (RPE)**, a novel metric that quantifies chart complexity. Guided by RPE, we develop **complexity-aware chart coder** to autonomously synthesize diverse, high-complexity charts via executable programs. (2) To guarantee reasoning rigor, we develop **truth-anchored inverse QA synthesis**. Diverging from standard generation, we adopt an answer-first paradigm: we extract deterministic answers directly from the source code, generate questions conditional on these anchors, and enforce strict consistency verification. To further elevate difficulty and reasoning depth, we filter samples based on model fail-rate and distill high-quality Chain-of-Thought (CoT) reasoning.
-We curate ChartVerse-SFT-600K and ChartVerse-RL-40K using Qwen3-VL-30B-A3B-Thinking as the teacher. Experimental results demonstrate that ChartVerse-8B achieves state-of-the-art performance, notably surpassing its teacher and rivaling the stronger Qwen3-32B-Thinking.
+We curate ChartVerse-SFT-600K and ChartVerse-RL-40K using Qwen3-VL-30B-A3B-Thinking as the teacher. Experimental results demonstrate that ChartVerse-8B achieves state-of-the-art performance, notably surpassing its teacher and rivaling the stronger Qwen3-VL-32B-Thinking.
 
 ## ⚡ Method Highlights
 
@@ -112,8 +112,9 @@ Our synthesis pipeline produced two high-quality datasets available on HuggingFa
 
 | Dataset Name | Scale | Composition | Download |
 | :--- | :---: | :--- | :---: |
-| **ChartVerse-SFT-600K** | **600K** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/ChartVerse-SFT) |
-| **ChartVerse-RL-40K** | **40K** | Hard Reasoning Samples | [🤗 Download](https://huggingface.co/datasets/ChartVerse-RL) |
+| **ChartVerse-SFT-1800K** | **1800K** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-SFT-1800K) |
+| **ChartVerse-SFT-600K** | **600K** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-SFT-600K) |
+| **ChartVerse-RL-40K** | **40K** | Hard Reasoning Samples | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-RL-40K) |
 
 ### 🆚 Comparison with Existing Datasets
 
@@ -136,13 +137,10 @@ We release the **Complexity-Aware Chart Coder** and the full **ChartVerse Reason
 
 | Model Name | Type | Base Model | Param | Avg Score | HuggingFace Link |
 | :--- | :--- | :--- | :---: | :---: | :---: |
-| **Complexity-Aware Chart Coder** | Coder | Qwen2.5-Coder | 7B | - | [🤗 Download](https://huggingface.co/YOUR_USERNAME/Complexity-Aware-Chart-Coder) |
-| **ChartVerse-2B-SFT** | VLM | Qwen3-VL-2B-Instruct | 2B | 49.8 | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-2B-SFT) |
-| **ChartVerse-2B-RL** | VLM | ChartVerse-2B-SFT | 2B | **54.3** | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-2B-RL) |
-| **ChartVerse-4B-SFT** | VLM | Qwen3-VL-4B-Instruct | 4B | 59.7 | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-4B-SFT) |
-| **ChartVerse-4B-RL** | VLM | ChartVerse-4B-SFT | 4B | **61.9** | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-4B-RL) |
-| **ChartVerse-8B-SFT** | VLM | Qwen3-VL-8B-Instruct | 8B | 62.5 | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-8B-SFT) |
-| **ChartVerse-8B-RL** | VLM | ChartVerse-8B-SFT | 8B | **64.1** | [🤗 Download](https://huggingface.co/YOUR_USERNAME/ChartVerse-8B-RL) |
+| **Complexity-Aware Chart Coder** | Coder | Qwen2.5-Coder | 7B | - | [🤗 Download](https://huggingface.co/opendatalab/ChartVerse-Coder) |
+| **ChartVerse-2B** | VLM | Qwen3-VL-2B-Instruct | 2B | **54.3** | [🤗 Download](https://huggingface.co/opendatalab/ChartVerse-2B) |
+| **ChartVerse-4B-SFT** | VLM | Qwen3-VL-4B-Instruct | 4B | **61.9** | [🤗 Download](https://huggingface.co/opendatalab/ChartVerse-4B) |
+| **ChartVerse-8B-SFT** | VLM | Qwen3-VL-8B-Instruct | 8B | **64.1** | [🤗 Download](https://huggingface.co/opendatalab/ChartVerse-8B) |
 
 ### 🏆 Detailed Performance
 
@@ -181,13 +179,13 @@ We provide detailed evaluation scripts in the `eval/` directory. Our evaluation 
 Since ChartVerse models are initialized from **Qwen3-VL**, usage is straightforward with the `transformers` library.
 
 ```python
-from transformers import Qwen2VLForConditionalGeneration, AutoTokenizer, AutoProcessor
+from transformers import Qwen3VLForConditionalGeneration, AutoTokenizer, AutoProcessor
 from PIL import Image
 import torch
 
 # 1. Load Model
-model_path = "YOUR_USERNAME/ChartVerse-8B-RL"
-model = Qwen2VLForConditionalGeneration.from_pretrained(
+model_path = "opendatalab/ChartVerse-8B"
+model = Qwen3VLForConditionalGeneration.from_pretrained(
     model_path, torch_dtype="auto", device_map="auto"
 )
 processor = AutoProcessor.from_pretrained(model_path)
