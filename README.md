@@ -5,9 +5,19 @@
 </div>
 
 <div align="center">
-  <strong>Anonymous Authors</strong>
+  <strong>
+    Zheng Liu<sup>1,4*</sup>, Honglin Lin<sup>2,4*</sup>, Chonghan Qin<sup>3,4</sup>, Xiaoyang Wang<sup>4</sup>, Xin Gao<sup>4</sup>, Yu Li<sup>4</sup>,
+    <br>
+    Mengzhang Cai<sup>4</sup>, Yun Zhu<sup>4</sup>, Zhanping Zhong<sup>4</sup>, Qizhi Pei<sup>4</sup>, Zhuoshi Pan<sup>4</sup>, Xiaoran Shang<sup>4</sup>,
+    <br>
+    Bin Cui<sup>1</sup>, Conghui He<sup>4</sup>, Wentao Zhang<sup>1✉</sup>, Lijun Wu<sup>4✉</sup>
+  </strong>
+  <br><br>
+  <sup>1</sup>Peking University, <sup>2</sup>Shanghai Jiao Tong University, <sup>3</sup>The University of Hong Kong,
   <br>
-  (Affiliations Placeholder)
+  <sup>4</sup>Shanghai Artificial Intelligence Laboratory
+  <br><br>
+  <sub>* Equal contribution &nbsp;&nbsp; ✉ Corresponding author</sub>
 </div>
 
 <br>
