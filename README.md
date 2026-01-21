@@ -23,7 +23,7 @@
 <br>
 
 <div align="center">
-  <a href="https://arxiv.org/abs/YOUR_ARXIV_ID" target="_blank">
+  <a href="https://arxiv.org/abs/2601.13606" target="_blank">
       <img alt="arXiv" src="https://img.shields.io/badge/arXiv-ChartVerse-red?logo=arxiv" height="25" />
   </a>
   <a href="https://github.com/YOUR_USERNAME/ChartVerse" target="_blank">
