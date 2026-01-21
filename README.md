@@ -227,10 +227,13 @@ print(output_text[0])
 If you find our work helpful, please cite:
 
 ```bibtex
-@article{chartverse2026,
-  title={ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch},
-  author={Anonymous Authors},
-  journal={Anonymous ACL Submission},
-  year={2026}
+@misc{liu2026chartversescalingchartreasoning,
+      title={ChartVerse: Scaling Chart Reasoning via Reliable Programmatic Synthesis from Scratch}, 
+      author={Zheng Liu and Honglin Lin and Chonghan Qin and Xiaoyang Wang and Xin Gao and Yu Li and Mengzhang Cai and Yun Zhu and Zhanping Zhong and Qizhi Pei and Zhuoshi Pan and Xiaoran Shang and Bin Cui and Conghui He and Wentao Zhang and Lijun Wu},
+      year={2026},
+      eprint={2601.13606},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2601.13606}, 
 }
 ```
