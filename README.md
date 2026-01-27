@@ -43,6 +43,7 @@
 </div>
 
 ## 🔥 News
+* **[2026-01-21]**: 🚀 Our ChartVerse-SFT-1800K dataset ranked **Top 8 on Hugging Face Datasets Trending (Top 1 on Image Text Filed)**.   
 * **[2026-01-07]** 🚀 **Project Launch:** The full **ChartVerse ecosystem** is now available, including the **paper**, **Complexity-Aware Chart Coder**, **models** (2B/4B/8B), and **datasets** (SFT-600K & RL-40K).
 
 * **[2026-01-07]** 🏆 **SOTA Performance:** **ChartVerse-8B** achieves **64.1%** average score on 6 benchmarks, surpassing its teacher **Qwen3-VL-30B-Thinking** (62.9%) and approaching **Qwen3-32B** (67.0%). **ChartVerse-4B** (61.9%) significantly outperforms **Qwen3-VL-8B-Thinking** (60.0%).
