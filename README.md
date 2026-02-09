@@ -43,7 +43,7 @@
 </div>
 
 ## 🔥 News
-* **[2026-01-30]** 🚀 **Trending:** Our ChartVerse-SFT-1800K dataset ranked **Top 1 on Hugging Face Datasets Trending**.  
+* **[2026-01-30]** 🚀 **Trending:** Our ChartVerse-SFT-1.8M dataset ranked **Top 1 on Hugging Face Datasets Trending**.  
 * **[2026-01-07]** 🚀 **Project Launch:** The full **ChartVerse ecosystem** is now available, including the **paper**, **Complexity-Aware Chart Coder**, **models** (2B/4B/8B), and **datasets** (SFT-600K & RL-40K).
 
 * **[2026-01-07]** 🏆 **SOTA Performance:** **ChartVerse-8B** achieves **64.1%** average score on 6 benchmarks, surpassing its teacher **Qwen3-VL-30B-Thinking** (62.9%) and approaching **Qwen3-32B** (67.0%). **ChartVerse-4B** (61.9%) significantly outperforms **Qwen3-VL-8B-Thinking** (60.0%).
@@ -123,7 +123,7 @@ Our synthesis pipeline produced two high-quality datasets available on HuggingFa
 
 | Dataset Name | Scale | Composition | Download |
 | :--- | :---: | :--- | :---: |
-| **ChartVerse-SFT-1800K** | **1800K** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-SFT-1800K) |
+| **ChartVerse-SFT-1.8M** | **1.8M** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-SFT-1.8M) |
 | **ChartVerse-SFT-600K** | **600K** | High-Complexity Charts + CoT Reasoning | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-SFT-600K) |
 | **ChartVerse-RL-40K** | **40K** | Hard Reasoning Samples | [🤗 Download](https://huggingface.co/datasets/opendatalab/ChartVerse-RL-40K) |
 
